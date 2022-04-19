@@ -24,9 +24,7 @@ public class BaseApp extends JFrame {
                 ChangeInterface();
                 NavFrame nf = new NavFrame("Academic Calendar", "https://confluence.ciit.edu.ph:8443/display/CS/Academic+Calendar", "columnLayout two-equal");
                 nf.setVisible(true);
-                nf.setLayout(new GridBagLayout());
-                nf.setSize(600,400);
-                nf.pack();
+
             }
         });
         handbookButton.addMouseListener(new MouseAdapter() {
