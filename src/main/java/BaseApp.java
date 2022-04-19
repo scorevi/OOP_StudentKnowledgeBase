@@ -34,36 +34,6 @@ public class BaseApp extends JFrame {
                 super.mouseClicked(e);
                 ChangeInterface();
 
-                Engine engine = Engine.newInstance(RenderingMode.HARDWARE_ACCELERATED);
-                Browser browser = engine.newBrowser();
-                browser.navigation().loadUrl("https://confluence.ciit.edu.ph:8443/display/CS/Academic+Calendar");
-
-
-                SwingUtilities.invokeLater(() -> {
-                    // Creating Swing component for rendering web content
-                    // loaded in the given Browser instance
-                    browser.navigation().on(LoadFinished.class,event -> {
-                        browser.mainFrame().ifPresent(frame -> frame.document().ifPresent(document -> {
-                            document.documentElement().ifPresent(documentElement ->
-                                    documentElement.findElementByClassName("columnLayout two-equal").ifPresent(element -> {
-                                        System.out.println(element.innerText());
-                                        JTextPane webPane = new JTextPane();
-
-
-                                        JScrollPane webScrollPane = new JScrollPane(webPane);
-
-                                        webScrollPane.setSize(600,400);
-                                        mainPanel.add(webScrollPane, BorderLayout.WEST);
-                                        webPane.setText(element.innerText());
-
-                                    }));
-
-                        }));
-                        mainContent.updateUI();
-                    });
-
-                });
-
             }
         });
         handbookButton.addMouseListener(new MouseAdapter() {
