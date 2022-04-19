@@ -3,11 +3,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import com.teamdev.jxbrowser.browser.Browser;
-import com.teamdev.jxbrowser.engine.Engine;
-import com.teamdev.jxbrowser.engine.RenderingMode;
-import com.teamdev.jxbrowser.navigation.internal.rpc.LoadFinished;
-
 public class BaseApp extends JFrame {
     private JPanel mainPanel;
     private JPanel mainContent;
@@ -19,12 +14,6 @@ public class BaseApp extends JFrame {
     private JLabel searchLabel;
     private static JFrame frame = new JFrame("CIIT Student Knowledge Base");
     public void ChangeInterface() {
-        academicCalendarButton.setVisible(false);
-        handbookButton.setVisible(false);
-        resourcesButton.setVisible(false);
-        FAQ_Button.setVisible(false);
-        searchLabel.setVisible(false);
-        searchTextField.setVisible(false);
         frame.setVisible(false);
     }
     public BaseApp() {
@@ -33,7 +22,11 @@ public class BaseApp extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 ChangeInterface();
-
+                NavFrame nf = new NavFrame("Academic Calendar", "https://confluence.ciit.edu.ph:8443/display/CS/Academic+Calendar", "columnLayout two-equal");
+                nf.setVisible(true);
+                nf.setLayout(new GridBagLayout());
+                nf.setSize(600,400);
+                nf.pack();
             }
         });
         handbookButton.addMouseListener(new MouseAdapter() {

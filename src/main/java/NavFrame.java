@@ -23,19 +23,22 @@ public class NavFrame extends BaseApp {
 
 
     public NavFrame(String title, String PageURL, String PageElement) {
+
+
+
         JFrame frame = new JFrame();
         frame.setTitle(title);
         frame.setBounds(100, 100, 479, 179);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel NavPanel = new JPanel();
-        NavPanel.setLayout(new GridLayout(2, 2, 5, 10));
+        NavPanel.setLayout(new BorderLayout());
 
         JTextPane NavPane = new JTextPane();
         JScrollPane NavScrollPane = new JScrollPane(NavPane);
 
-        NavPanel.add(NavScrollPane);
-        NavScrollPane.setLayout(new GridLayout(1,1,3,5));
+        NavPanel.add(NavPane, BorderLayout.WEST);
+        frame.setContentPane(NavPanel);
 
         Engine engine = Engine.newInstance(RenderingMode.HARDWARE_ACCELERATED);
         Browser browser = engine.newBrowser();
