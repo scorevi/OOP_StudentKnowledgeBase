@@ -6,7 +6,8 @@ import com.teamdev.jxbrowser.navigation.internal.rpc.LoadProgressChanged;
 
 import javax.swing.*;
 import java.awt.*;
-
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
 public class NavFrame extends JFrame {
@@ -82,6 +83,14 @@ public class NavFrame extends JFrame {
             });
 
 
+        });
+
+        BackButton.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                setVisible(false);
+                BaseApp.frame.setVisible(true);
+            }
         });
 
     }
