@@ -88,10 +88,15 @@ public class NavFrame extends JFrame {
         BackButton.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                dispose();
                 setVisible(false);
                 BaseApp.frame.setVisible(true);
             }
         });
 
     }
+}
+
+class BrowserManager {
+
 }

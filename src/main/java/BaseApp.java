@@ -23,6 +23,7 @@ public class BaseApp extends JFrame {
                 ChangeInterface();
                 NavFrame nf = new NavFrame("Academic Calendar", "https://confluence.ciit.edu.ph:8443/display/CS/Academic+Calendar", "columnLayout two-equal");
                 nf.setVisible(true);
+                nf.setLocationRelativeTo(null);
 
             }
         });
@@ -32,6 +33,7 @@ public class BaseApp extends JFrame {
                 ChangeInterface();
                 HandbookFrame hf = new HandbookFrame();
                 hf.setVisible(true);
+                hf.setLocationRelativeTo(null);
             }
         });
         FAQ_Button.addMouseListener(new MouseAdapter() {
@@ -57,6 +59,7 @@ public class BaseApp extends JFrame {
         frame.setSize(800,600);
         frame.setVisible(true);
         frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
 
 
 
