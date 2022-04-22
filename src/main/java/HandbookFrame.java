@@ -1,5 +1,3 @@
-import sun.security.util.ArrayUtil;
-
 import javax.swing.*;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
@@ -11,14 +9,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class HandbookFrame extends JFrame {
+public class HandbookFrame extends FrameCustomizer {
     private JButton CategoryBtn;
     private JButton BackBtn = new JButton();
 
     private JPanel HB_Panel = new JPanel();
     private JPanel Blank_Panel = new JPanel();
 
-    private JLabel FunctionTitle = new JLabel("Select a topic to explore or use the search bar to find a specific information.");
     public HandbookFrame() {
 
         this.setTitle("Online Student Handbook");
@@ -29,14 +26,9 @@ public class HandbookFrame extends JFrame {
 
         BackBtn.setText("<<");
 
-
-
         File directoryPath = new File(System.getProperty("user.dir") + "/src/main/java/articles");
-        //List of all files and directories
         String contents[] = directoryPath.list();
-        System.out.println("List of files and directories in the specified directory:");
         for(int i=0; i<contents.length; i++) {
-            System.out.println(contents[i]);
             CategoryBtn = new JButton(contents[i]);
             CategoryBtn.setText(contents[i]);
             CategoryBtn.setActionCommand(contents[i]);
@@ -54,12 +46,20 @@ public class HandbookFrame extends JFrame {
                     }
                 }
 
-
             });
 
             HB_Panel.add(CategoryBtn);
 
         }
+
+        BackBtn.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                ChangeInterface(BaseApp.frame);
+                HandbookFrame.this.setVisible(false);
+                HandbookFrame.this.dispose();
+            }
+        });
 
 
         HB_Panel.add(Blank_Panel);
@@ -71,9 +71,14 @@ public class HandbookFrame extends JFrame {
 
     }
 
+    @Override
+    public void ChangeInterface(JFrame frame) {
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+    }
 }
-
-class Handbook_SubFrame {
+/* Class */
+class Handbook_SubFrame extends FrameCustomizer {
     private JFrame SubFrame;
     private JPanel SubFrame_Panel;
     private JList<String> ArticleList;
@@ -83,6 +88,7 @@ class Handbook_SubFrame {
         SubFrame = new JFrame();
         SubFrame.setSize(800,600);
         SubFrame.setLocationRelativeTo(null);
+        SubFrame.setResizable(false);
 
         SubFrame_Panel = new JPanel();
         SubFrame_Panel.setLayout(new BorderLayout());
@@ -121,10 +127,8 @@ class Handbook_SubFrame {
                     int index = ArticleList.locationToIndex(e.getPoint());
                     if (index >= 0) {
                         Object o = ArticleList.getModel().getElementAt(index);
-                        System.out.println("Double-clicked on: " + o.toString());
-
                         NavFrame NF = new NavFrame(o.toString(), ArticleArrayList.get(index), "wiki-content");
-                        NF.setVisible(true);
+                        ChangeInterface(NF);
 
                     }
                 }
@@ -134,6 +138,10 @@ class Handbook_SubFrame {
 
     }
 
-
+    @Override
+    public void ChangeInterface(JFrame frame) {
+        frame.setResizable(true);
+        frame.setVisible(true);
+    }
 }
 
