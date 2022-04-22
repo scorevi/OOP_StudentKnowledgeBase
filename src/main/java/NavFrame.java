@@ -80,50 +80,30 @@ public class NavFrame extends JFrame {
 
         });
 
+        initializeListeners();
+
+    }
+
+    /**
+     Initializes all component event listeners.
+     */
+    public void initializeListeners() {
         // Back Button event handler
         BackButton.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                dispose();
+
                 setVisible(false);
-                BaseApp.frame.setVisible(true);
+                dispose();
+
+                new BaseApp();
 
             }
         });
 
     }
 
-
 }
 
-/**
- * A set of custom functionalities for JxBrowser's browser component
- */
-class BrowserManager {
-
-    /**
-     * Converts the HTML code of the specified element to Data URI format.
-     */
-    public String GetElementContent(String HTMLCode) {
-        Engine engine = Engine.newInstance(RenderingMode.HARDWARE_ACCELERATED);
-        Browser browser = engine.newBrowser();
-
-        String base64Html = Base64.getEncoder().encodeToString(HTMLCode.getBytes(UTF_8));
-        String dataUrl = "data:text/html;charset=utf-8;base64," + base64Html;
-        browser.navigation().loadUrl(dataUrl);
-
-        return dataUrl;
-
-    }
-
-    /**
-     * Gets the progress value of the page's loading time in percentage.
-     */
-    public void getLoadProgressValue(Browser browser, JProgressBar progressBar) {
-        browser.navigation().on(LoadProgressChanged.class, event -> {
-            progressBar.setValue((int) (event.getProgress() * 100));
-        });
-    }
 
 
-}

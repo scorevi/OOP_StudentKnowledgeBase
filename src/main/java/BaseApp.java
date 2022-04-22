@@ -9,24 +9,17 @@ public class BaseApp extends FrameCustomizer {
     private JButton academicCalendarButton;
     private JButton handbookButton;
     private JButton FAQ_Button;
-    public static JFrame frame = new JFrame("CIIT Student Knowledge Base");
-
-    /**
-     * Create the application.
-     */
+    private JFrame frame;
     public BaseApp() {
 
         initialize();
 
     }
 
-    /**
-     * Initialize the contents of the frame.
-     */
-    private void initialize() {
+    public void initialize() {
+        frame = new JFrame("Student Knowledge Base");
 
         // Academic Calendar button handler
-
         academicCalendarButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -58,19 +51,27 @@ public class BaseApp extends FrameCustomizer {
         });
 
         frame.setLayout(new GridBagLayout());
-        frame.setContentPane(new BaseApp().mainPanel);
+        frame.setContentPane(mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setSize(800,600);
-        frame.setVisible(true);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
     }
+
+
 
     public static void main(String[] args) {
 
         // Mandatory evaluation license key for JxBrowser, DO NOT REMOVE! (04.18.2022 - 05.18.2022)
         System.setProperty("jxbrowser.license.key", "1BNDHFSC1G2FM398LUD9P59APVTGX3OOMX268QX3POT8B36H7AN1W6TJ4EOXUNWX4UPS8T");
+        SwingUtilities.invokeLater(new Runnable(){
+            public void run() {
+                new BaseApp();
+            }
+        });
 
 
     }
@@ -84,7 +85,5 @@ public class BaseApp extends FrameCustomizer {
 
     }
 
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-    }
+
 }
