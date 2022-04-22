@@ -1,9 +1,16 @@
+import sun.security.util.ArrayUtil;
+
 import javax.swing.*;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.parser.ParserDelegator;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.IOException;
+import java.awt.event.*;
+import java.io.*;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class HandbookFrame extends JFrame {
     private JButton CategoryBtn;
     private JButton BackBtn = new JButton();
@@ -22,6 +29,8 @@ public class HandbookFrame extends JFrame {
 
         BackBtn.setText("<<");
 
+
+
         File directoryPath = new File(System.getProperty("user.dir") + "/src/main/java/articles");
         //List of all files and directories
         String contents[] = directoryPath.list();
@@ -30,10 +39,27 @@ public class HandbookFrame extends JFrame {
             System.out.println(contents[i]);
             CategoryBtn = new JButton(contents[i]);
             CategoryBtn.setText(contents[i]);
+            CategoryBtn.setActionCommand(contents[i]);
+
+            CategoryBtn.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    System.out.println(((JButton) e.getSource()).getText());
+                    try {
+                        Handbook_SubFrame HBSF = new Handbook_SubFrame(((JButton) e.getSource()).getText());
+
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+
+
+            });
+
             HB_Panel.add(CategoryBtn);
 
         }
-
 
 
         HB_Panel.add(Blank_Panel);
@@ -42,12 +68,70 @@ public class HandbookFrame extends JFrame {
 
         this.setContentPane(HB_Panel);
 
-        CategoryBtn.addMouseListener(new MouseAdapter() {
+
+    }
+
+}
+
+class Handbook_SubFrame {
+    private JFrame SubFrame;
+    private JPanel SubFrame_Panel;
+    private JList<String> ArticleList;
+    private DefaultListModel ALmodel = new DefaultListModel();
+    public Handbook_SubFrame(String source) throws IOException {
+
+        SubFrame = new JFrame();
+        SubFrame.setSize(800,600);
+        SubFrame.setLocationRelativeTo(null);
+
+        SubFrame_Panel = new JPanel();
+        SubFrame_Panel.setLayout(new BorderLayout());
+        ArticleList = new JList<String>(ALmodel);
+        SubFrame_Panel.add(ArticleList, BorderLayout.CENTER);
+
+        SubFrame.setContentPane(SubFrame_Panel);
+
+        File ArticleFile = new File(System.getProperty("user.dir") + "/src/main/java/articles/" + source + "/articles.txt");
+        //List of all files and directories
+
+        BufferedReader br = new BufferedReader(new FileReader(ArticleFile));
+        String line = null;
+        String ArticleURLs[] = {};
+        ArrayList<String> ArticleArrayList = new ArrayList<String>(Arrays.asList(ArticleURLs));
+        while ((line = br.readLine()) != null) {
+
+            HTMLEditorKit htmlKit = new HTMLEditorKit();
+            HTMLDocument htmlDoc = (HTMLDocument) htmlKit.createDefaultDocument();
+            HTMLEditorKit.Parser parser = new ParserDelegator();
+            parser.parse(new InputStreamReader(new URL(line).openStream()),
+                    htmlDoc.getReader(0), true);
+
+            ALmodel.addElement(htmlDoc.getProperty("title"));
+            ArticleArrayList.add(line);
+            ArticleURLs = ArticleArrayList.toArray(ArticleURLs);
+        }
+
+        SubFrame.setVisible(true);
+
+        ArticleList.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                if (e.getClickCount() == 2 && !e.isConsumed()) {
+                    e.consume();
+                    int index = ArticleList.locationToIndex(e.getPoint());
+                    if (index >= 0) {
+                        Object o = ArticleList.getModel().getElementAt(index);
+                        System.out.println("Double-clicked on: " + o.toString());
 
+                        NavFrame NF = new NavFrame(o.toString(), ArticleArrayList.get(index), "wiki-content");
+                        NF.setVisible(true);
+
+                    }
+                }
             }
         });
+
+
     }
 
 

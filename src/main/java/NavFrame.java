@@ -3,11 +3,15 @@ import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.RenderingMode;
 import com.teamdev.jxbrowser.navigation.internal.rpc.LoadFinished;
 import com.teamdev.jxbrowser.navigation.internal.rpc.LoadProgressChanged;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Base64;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 
 public class NavFrame extends JFrame {
@@ -41,14 +45,21 @@ public class NavFrame extends JFrame {
 
         BackButton.setText("Back");
 
+        Engine engine = Engine.newInstance(RenderingMode.HARDWARE_ACCELERATED);
+        Browser SpecificBrowser = engine.newBrowser();
+        BrowserView view = BrowserView.newInstance(SpecificBrowser);
+
         NavPanel.add(BackButton, BorderLayout.EAST);
-        NavPanel.add(NavScrollPane, BorderLayout.CENTER);
+        NavPanel.add(view, BorderLayout.CENTER);
         NavPanel.add(LoadingBar,BorderLayout.NORTH);
         this.setContentPane(NavPanel);
 
-        Engine engine = Engine.newInstance(RenderingMode.HARDWARE_ACCELERATED);
+
         Browser browser = engine.newBrowser();
+
+
         browser.navigation().loadUrl(PageURL);
+
 
         NavScrollPane.setEnabled(false);
         NavPane.setEditable(false);
@@ -62,6 +73,7 @@ public class NavFrame extends JFrame {
         NavPane.setFont(font);
 
 
+
         SwingUtilities.invokeLater(() -> {
             // Creating Swing component for rendering web content
             // loaded in the given Browser instance
@@ -73,6 +85,12 @@ public class NavFrame extends JFrame {
                                 System.out.println(element.innerText());
                                 NavScrollPane.setEnabled(true);
                                 NavPane.setText(element.innerText());
+
+                                String html = element.innerHtml();
+                                String base64Html = Base64.getEncoder().encodeToString(html.getBytes(UTF_8));
+                                String dataUrl = "data:text/html;charset=utf-8;base64," + base64Html;
+                                SpecificBrowser.navigation().loadUrl(dataUrl);
+
                                 LoadingBar.setStringPainted(false);
 
 
@@ -97,6 +115,3 @@ public class NavFrame extends JFrame {
     }
 }
 
-class BrowserManager {
-
-}

@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+
 
 public class BaseApp extends JFrame {
     private JPanel mainPanel;
@@ -49,7 +51,7 @@ public class BaseApp extends JFrame {
         });
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         System.setProperty("jxbrowser.license.key", "1BNDHFSC1G2FM398LUD9P59APVTGX3OOMX268QX3POT8B36H7AN1W6TJ4EOXUNWX4UPS8T");
 
         frame.setLayout(new GridBagLayout());
@@ -60,10 +62,6 @@ public class BaseApp extends JFrame {
         frame.setVisible(true);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
-
-
-
-
 
 
     }
